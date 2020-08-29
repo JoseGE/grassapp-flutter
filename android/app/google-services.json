@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "127320678869",
+    "firebase_url": "https://grassapp-98c63.firebaseio.com",
+    "project_id": "grassapp-98c63",
+    "storage_bucket": "grassapp-98c63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127320678869:android:1a508a8587af6b64e89d5c",
+        "android_client_info": {
+          "package_name": "com.example.grass_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127320678869-14mp23aochqhfo3eja8ndumdfnlno89c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMkKBfcMF2SO5Og7WKs8BJ0dI58YeBxgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127320678869-14mp23aochqhfo3eja8ndumdfnlno89c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
