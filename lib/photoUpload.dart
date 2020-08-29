@@ -1,6 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:grass_app/homePage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:intl/intl.dart';
 
 class PhotoUpload extends StatefulWidget {
   PhotoUpload({Key key}) : super(key: key);
@@ -12,6 +17,7 @@ class PhotoUpload extends StatefulWidget {
 class _PhotoUploadState extends State<PhotoUpload> {
   File sampleImage;
   String _myValue;
+  String url;
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -69,7 +75,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
                   height: 15.0,
                 ),
                 RaisedButton(
-                  onPressed: validateAndSave,
+                  onPressed: uploadStatusImage,
                   child: Text("Agregar foto"),
                   elevation: 10.0,
                   color: Colors.grey,
@@ -79,6 +85,42 @@ class _PhotoUploadState extends State<PhotoUpload> {
             )),
       )),
     );
+  }
+
+  void uploadStatusImage() async {
+    if (validateAndSave()) {
+      final StorageReference postImageRef =
+          FirebaseStorage.instance.ref().child("Post images");
+      var timekey = DateTime.now();
+      final StorageUploadTask uploadTask =
+          postImageRef.child(timekey.toString() + ".jpg").putFile(sampleImage);
+      var imageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+      url = imageUrl.toString();
+      print("Imagen: " + url);
+      saveToDatabase(url);
+      Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return HomePage();
+      }));
+    }
+  }
+
+  void saveToDatabase(String url) {
+    var dbTimeKey = DateTime.now();
+    var formatDate = DateFormat('MMM d, yyyy');
+    var formatTime = DateFormat('EEEE, hh:mm aaa');
+
+    String date = formatDate.format(dbTimeKey);
+    String time = formatTime.format(dbTimeKey);
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    var data = {
+      "image": url,
+      "description": _myValue,
+      "date": date,
+      "time": time
+    };
+
+    ref.child("Posts").push().set(data);
   }
 
   bool validateAndSave() {
